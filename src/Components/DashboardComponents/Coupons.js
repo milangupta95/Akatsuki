@@ -14,12 +14,14 @@ import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import MenuList from '@mui/material/MenuList';
+import Modal from '@mui/material/Modal';
+import {Box} from '@mui/material'
+import CouponForm from './CouponForm';
 
 function Coupons() {
     const theme = useTheme();
     const [parameter, setParameter] = React.useState('date');
     const options = ['Date Added', 'Purchase Value'];
-    const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const [page, setPage] = React.useState(1);
@@ -44,16 +46,14 @@ function Coupons() {
         setOpen((prevOpen) => !prevOpen);
     };
 
-    const handleClose = (event) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target)) {
-            return;
-        }
 
-        setOpen(false);
-    };
-    const handleChange = (event) => {
-        setParameter(event.target.value);
-    };
+    // const handleChange = (event) => {
+    //     setParameter(event.target.value);
+    // };
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const coupons = [
         {
@@ -85,13 +85,13 @@ function Coupons() {
         <div className='space-y-8 p-4'>
             <div className='flex items-center justify-between'>
                 <h1 className='text-2xl font-bold'>Coupons</h1>
-                <Button color='secondary' variant='contained' className='z-[0]' disableElevation>Add a Coupon</Button>
+                <Button onClick={handleOpen} color='secondary' variant='contained' className='z-[0]' disableElevation>Add a Coupon</Button>
             </div>
 
             <div className='flex shadow-lg flex-col rounded-lg space-y-2'>
                 <div className='flex border-b-4 item-center  justify-between p-2 rounded-lg'>
                     <div className='w-[50%] space-x-2 items-center flex'>
-                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" size='large'>
+                        {/* <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" size='large'>
                             <Button onClick={handleClick}>{options[selectedIndex]}</Button>
                             <Button
                                 size="small"
@@ -103,7 +103,7 @@ function Coupons() {
                             >
                                 <ArrowDropDownIcon />
                             </Button>
-                        </ButtonGroup>
+                        </ButtonGroup> */}
 
                         <ButtonGroup variant="contained" color='primary' size='large'>
                             <Button>
@@ -113,7 +113,7 @@ function Coupons() {
                                 <ArrowUpwardIcon />
                             </Button>
                         </ButtonGroup>
-                        <Popper
+                        {/* <Popper
                             sx={{
                                 zIndex: 1,
                             }}
@@ -148,7 +148,7 @@ function Coupons() {
                                     </Paper>
                                 </Grow>
                             )}
-                        </Popper>
+                        </Popper> */}
                     </div>
                     <div>
 
@@ -173,6 +173,19 @@ function Coupons() {
                 </div>
 
             </div>
+
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                className='w-[50%]'
+            >
+                <Box>
+                    <CouponForm handleClose={handleClose} />
+                </Box>
+
+            </Modal>
         </div>
     )
 }

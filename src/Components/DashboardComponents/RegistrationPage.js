@@ -38,10 +38,6 @@ function RegistrationPage(props) {
         <div className='flex h-[100vh] justify-center w-full p-2 items-center'>
 
             <div className='shadow-sm md:w-[50%] w-[50%] sm:w-[50%] rounded-r-lg h-[100%] flex items-center'>
-                {/* <div className='flex h-[180px] bg-gray-300 items-start justify-end '>
-
-                    {/* <img src='/bag2.jpg' className='w-full h-full rounded-tr-lg' /> */}
-                {/* </div> */}
                 <div className='z-[100] w-full space-y-2 flex-end rounded-lg p-4 bg-white'>
                     <div className='flex w-[full] items-center justify-between'>
                         <h1 className='text-xl font-bold text-purple-800'> Enter Customer Details </h1>
