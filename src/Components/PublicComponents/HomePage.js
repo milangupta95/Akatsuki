@@ -1,6 +1,4 @@
 import React from 'react'
-import CustomerTable from '../DashboardComponents/CustomerTable'
-import Coupons from '../DashboardComponents/Coupons'
 import { Typewriter } from 'react-simple-typewriter'
 
 function HomePage() {
