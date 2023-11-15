@@ -7,7 +7,7 @@ import Select from '@mui/material/Select';
 
 function Stream() {
     const [camera, setCamera] = useState("camera-1");
-    const [filter, setFilter] = useState("heatmap");
+    const [filter, setFilter] = useState("heatmap"); 
     return (
         <div className='p-4 space-y-4'>
             <div className='flex items-center justify-between'>
