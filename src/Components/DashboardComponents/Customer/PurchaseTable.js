@@ -7,45 +7,55 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close'
-
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
+import { useState, useEffect } from 'react';
+import { api } from '../utility/api';
+import { CircularProgress } from '@mui/material';
 
 
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
-export default function PurchaseTable(props) {
-    const handleClose = props.handleClose;
+export default function PurchaseTable({ handleClose, customer_id }) {
+    const [purchases, setPurchases] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+    console.log(customer_id);
+    useEffect(() => {
+        (async function getData() {
+            setLoading(true);
+            try {
+                let res = await api.get(`/purchase/${customer_id}`);
+                if (res) {
+                    if (res.status === 200) {
+                        setPurchases(res.data);
+                    } else {
+                        setError("There Might Be Some Error");
+                    }
+                }
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+                setError(err.message);
+            }
+        })()
+    }, []);
     return (
-
-        <Paper sx={{ width: '100%' }}>
+        loading ? <CircularProgress></CircularProgress> : error ? <div>{error}</div> : <Paper sx={{ width: '100%' }}>
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table sx={{ maxWidth: 700 }} stickyHeader>
                     <TableHead>
                         <TableRow>
                             <TableCell>Id</TableCell>
-                            <TableCell align="right">Date</TableCell>
                             <TableCell align="right">Purchase Value</TableCell>
-                            
+                            <TableCell align="right">Purchase Date</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.name}>
+                        {purchases.map((purchase, idx) => (
+                            <TableRow key={idx}>
                                 <TableCell component="th" scope="row">
-                                    {row.name}
+                                    {idx + 1}
                                 </TableCell>
-                                <TableCell align="right">{row.calories}</TableCell>
-                                <TableCell align="right">{row.fat}</TableCell>
+                                <TableCell align="right">{purchase.product_price}</TableCell>
+                                <TableCell align="right">{purchase.created_at.split("T")[0]}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

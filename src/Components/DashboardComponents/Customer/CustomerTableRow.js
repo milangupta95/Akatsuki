@@ -113,7 +113,7 @@ function CustomerTableRow(props) {
                                         <CloseIcon></CloseIcon>
                                     </IconButton>
                                 </div>
-                                <CouponForCustomer handleClose={handleCouponModalClose} />
+                                <CouponForCustomer customer_id={customer.customer_id} handleClose={handleCouponModalClose} />
                             </div>
                         </div>
                     </div>

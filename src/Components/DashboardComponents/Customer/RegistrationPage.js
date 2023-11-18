@@ -125,7 +125,7 @@ function RegistrationPage(props) {
                     "first_name": fname,
                     "last_name": lname,
                     "email": email,
-                    "bill_amount": billAmmount,
+                    "total_bill_amount": billAmmount,
                     "address": address,
                     "feedback": feedback,
                     "gender" : gender,
@@ -143,6 +143,15 @@ function RegistrationPage(props) {
                             if (purchaseRes.status === 200) {
                                 setMessage("User updated SuccessFully and Purchase Added");
                                 setMessageType("success");
+                                // let newCustomers = [];
+                                // for(let i=0;i<customers.length;i++) {
+                                //     if(customers[i].customer_id == res.data.customer_id) {
+                                //         newCustomers.push(res.data);
+                                //     } else {
+                                //         newCustomers.push(customers[i]);
+                                //     }
+                                // }
+                                // setCustomers(newCustomers);
                                 setShowNotification(true);
                             } else {
                                 setMessage("User Added SuccessFully but unable Purchase Added");

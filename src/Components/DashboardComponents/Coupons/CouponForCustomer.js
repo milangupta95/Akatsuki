@@ -9,25 +9,36 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close'
-
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-export default function CouponForCustomer(props) {
-    const handleClose = props.handleClose;
+import { useState,useEffect } from 'react';
+import { api } from '../utility/api';
+import {CircularProgress} from '@mui/material';
+export default function CouponForCustomer({handleClose,customer_id}) {
+    const [coupons, setCoupons] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+    console.log(customer_id);
+    useEffect(() => {
+        (async function getData() {
+            setLoading(true);
+            try {
+                let res = await api.get(`/coupon/${customer_id}`);
+                if (res) {
+                    if (res.status === 200) {
+                        setCoupons(res.data);
+                    } else {
+                        setError("There Might Be Some Error");
+                    }
+                }
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+                setError(err.message);
+            }
+        })()
+    }, []);
     return (
 
-        <Paper sx={{ width: '100%'}}>
+        loading ? <CircularProgress></CircularProgress> : error ? <div>{error}</div> : <Paper sx={{ width: '100%'}}>
             <TableContainer sx={{ maxHeight: 440 }}>
             <Table sx={{ maxWidth: 700 }} stickyHeader>
                 <TableHead>
@@ -39,14 +50,14 @@ export default function CouponForCustomer(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.name}>
+                    {coupons.map((row) => (
+                        <TableRow key={row.coupon_code}>
                             <TableCell component="th" scope="row">
-                                {row.name}
+                                {row.coupon_code}
                             </TableCell>
-                            <TableCell align="center">{row.calories}</TableCell>
-                            <TableCell align="center">{row.fat}</TableCell>
-                            <TableCell align="center">{row.fat}</TableCell>
+                            <TableCell align="center">{row.min_purchase_val}</TableCell>
+                            <TableCell align="center">{row.coupon_amount}</TableCell>
+                            <TableCell align="center">{row.expiry_date.split("T")[0]}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
