@@ -13,8 +13,8 @@ function AnalyticsBox(props) {
     return (
         <div className='flex p-6 h-[150px] w-[300px] justify-between items-center rounded-2xl shadow-md shadow-gray-200 mt-4'>
             <div className='text-2xl flex flex-col items-center justify-center h-[100%]'>
-                <p className='text-sm text-gray-600 font-bold'>{values.name}</p>
-                <h1 className='text-4xl font-bold'>{values.actualValue}</h1>
+                <h1 className='text-4xl font-bold text-left'>{values.actualValue}</h1>
+                <p className='text-sm text-gray-600 text-left font-bold'>{values.name}</p>
             </div>
             <div className='w-[100px]'>
                 <CircularProgressbarWithChildren

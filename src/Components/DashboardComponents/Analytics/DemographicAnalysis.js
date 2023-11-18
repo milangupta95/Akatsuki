@@ -94,11 +94,11 @@ function DemographicAnalysis() {
                         ]}
                         indexBy="age-group"
                         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-                        padding={0.3}
+                        padding={0.7}
                         groupMode="grouped"
                         valueScale={{ type: 'linear' }}
                         indexScale={{ type: 'band', round: true }}
-                        colors={{ scheme: 'nivo' }}
+                        colors={{ scheme: 'paired' }}
                         defs={[
                             {
                                 id: 'dots',
@@ -142,6 +142,7 @@ function DemographicAnalysis() {
                                 ]
                             ]
                         }}
+                        borderRadius={3}
                         axisTop={null}
                         axisRight={null}
                         axisBottom={{
@@ -174,11 +175,11 @@ function DemographicAnalysis() {
                         legends={[
                             {
                                 dataFrom: 'keys',
-                                anchor: 'bottom-right',
-                                direction: 'column',
+                                anchor: 'top-right',
+                                direction: 'row',
                                 justify: false,
                                 translateX: 120,
-                                translateY: 0,
+                                translateY: -53,
                                 itemsSpacing: 2,
                                 itemWidth: 100,
                                 itemHeight: 20,
