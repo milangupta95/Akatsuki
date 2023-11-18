@@ -14,6 +14,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import { api } from '../utility/api';
+import { Snackbar,Alert } from '@mui/material';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -48,20 +50,18 @@ function a11yProps(index) {
     };
 }
 
-function CouponForm(props) {
-    let handleClose = props.handleClose;
-    console.log("Coupons")
-
+function CouponForm({handleClose,coupons,setCoupons}) {
+    const [value, setValue] = React.useState(0);
     const [couponCode, setcouponCode] = useState("");
     const [description, setDescription] = useState("");
-    const [discountType, setDiscountType] = useState("exact");
-    const [value, setValue] = React.useState(0);
+    const [discountType, setDiscountType] = useState("percentage");
     const [expiry, setExpiry] = React.useState(dayjs('2022-04-17'));
     const [discountValue, setDiscountValue] = useState(null);
     const [previousPurchase, setpreviousPurchase] = useState(null);
     const [freqvisit, setFreqvis] = useState(null);
-    const [purchaseValue,setPurchaseValue] = useState(null);
-
+    const [purchaseValue, setPurchaseValue] = useState(null);
+    const [message, setMessage] = useState("");
+    const [messageType,setMessageType] = useState("success");
 
     const handleDiscountChange = (e) => {
         setDiscountType(e.target.value);
@@ -75,9 +75,45 @@ function CouponForm(props) {
         setcouponCode("DIWALI500");
     }
 
-    const addCoupon = () => {
-
+    const addCoupon = async () => {
+        try {
+            let coupon = {
+                "coupon_code": couponCode,
+                "description": description,
+                "discount_type": discountType,
+                "coupon_amount": (Number)(discountValue),
+                "min_purchase_val": (Number)(purchaseValue),
+                "expiry_date": expiry,
+                "prev_purchase_amount": (Number)(previousPurchase),
+                "visit_frequency": (Number)(freqvisit)
+            }
+            const res = await api.post("/coupon", coupon);
+            if (res) {
+                if (res.status === 200) {
+                    setMessage("Coupon Added SuccessFully");
+                    setMessageType("success");
+                    setCoupons(() => {
+                        if(coupons.length === 0) {
+                            return [res.data]
+                        } else {
+                            return [...coupons,res.data]
+                        }
+                    })
+                    setShowNotification(true);
+                } else {
+                    setMessage("There Might Be Some Error");
+                    setMessageType("error");
+                    setShowNotification(true);
+                }
+            }
+        } catch (err) {
+            setMessage("There Might Be Some Error")
+            setMessageType("error");
+            setShowNotification(true);
+        }
     }
+
+    const [showNotification, setShowNotification] = React.useState(false);
 
     return (
         <div className='flex h-[100vh] justify-center w-[100vw] p-2 items-center'>
@@ -139,8 +175,22 @@ function CouponForm(props) {
                                             </Select>
                                         </div>
 
+
+
                                         <div className='flex items-center justify-between'>
-                                            <label className='text-lg'>Enter Purchase Ammount</label>
+                                            <label className='text-lg'>Enter Coupon Ammount/Percentage</label>
+
+                                            <TextField
+                                                value={discountValue}
+                                                onChange={(e) => setDiscountValue(e.target.value)}
+                                                variant='outlined'
+                                                className='w-[49%]'
+                                                placeholder='Discount'
+                                            ></TextField>
+                                        </div>
+
+                                        <div className='flex items-center justify-between'>
+                                            <label className='text-lg'>Enter Minimum Purchase</label>
 
                                             <TextField
                                                 value={purchaseValue}
@@ -153,24 +203,11 @@ function CouponForm(props) {
                                         </div>
 
                                         <div className='flex items-center justify-between'>
-                                            <label className='text-lg'>Enter Coupon Ammount/Percentage</label>
-
-                                            <TextField
-                                                value={discountValue}
-                                                onChange={(e) => setDiscountValue(e.target.value)}
-                                                variant='outlined'
-                                                className='w-[49%]'
-                                                placeholder='Discount'
-                                            ></TextField>
-
-                                        </div>
-
-                                        <div className='flex items-center justify-between'>
                                             <label className='text-lg'>Coupon Expiry</label>
 
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DemoContainer className='w-[49%]' components={['DatePicker']}>
-                                                    <DatePicker label="Select Expiry Date" value={expiry} onChange={(e) => setExpiry(e.target.value)} />
+                                                    <DatePicker label="Select Expiry Date" value={expiry} onChange={(newValue) => setExpiry(newValue)} />
                                                 </DemoContainer>
                                             </LocalizationProvider>
 
@@ -219,6 +256,11 @@ function CouponForm(props) {
 
                 </div>
             </div>
+            <Snackbar open={showNotification} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal:"right"}}>
+                <Alert onClose={() => setShowNotification(false)} severity={messageType} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }

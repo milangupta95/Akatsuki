@@ -20,7 +20,7 @@ function GeneralSetup() {
     console.log(brandlogo);
   }
   return (
-    <div className='p-4 shadow-md rounded-lg space-y-8 flex item-center flex-col w-[50%]'>
+    <div className='p-4 shadow-md rounded-lg space-y-8 flex item-center flex-col w-[100%]'>
       <h1 className='text-xl font-bold text-violet-800'>General Setup of Shop</h1>
       <form className='space-y-4'>
         <div className='flex justify-between items-center space-x-8'>

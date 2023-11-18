@@ -11,25 +11,37 @@ import CustomerTableRow from './CustomerTableRow';
 import { Button, Modal } from '@mui/material';
 import RegistrationPage from './RegistrationPage';
 import Box from '@mui/material/Box';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import IButtonTooltip from '../Common/IButtonTooltip';
-
-const rows = [
-    {
-        id : 1,
-        name: "Milan Kumar Gupta",
-        mobile: "9140076991",
-        email: "milangupta95@gmail.com",
-        address: "Jankipuram",
-        feedback: "Here is Feed"
-    }
-]
+import { api } from '../utility/api';
+import {CircularProgress} from '@mui/material'
 
 export default function StickyHeadTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [customers,setCustomers] = useState(rows);
+    const [customers, setCustomers] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
+    useEffect(() => {
+        (async () => {
+            setLoading(true);
+            try {
+                const res = await api.get("/customer");
+                if (res) {
+                    if (res.status === 200) {
+                        setCustomers(res.data);
+                    } else {
+                        setError("There is Some Error");
+                    }
+                    setLoading(false);
+                }
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        })();
+    }, [])
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -48,16 +60,18 @@ export default function StickyHeadTable() {
             <div className='h-50px flex p-2 item-center justify-between'>
                 <div className='font-bold text-2xl flex space-x-2 items-center'>
                     <p>Customers</p>
-                    <IButtonTooltip message={"List Of The Customers"}/>
+                    <IButtonTooltip message={"List Of The Customers"} />
                 </div>
                 <div>
                     <Button variant='contained' onClick={handleOpen} color='secondary'>Add Customer</Button>
                 </div>
             </div>
-            {customers.length === 0 ? <div className='text-lg font-bold text-red-600'>No Customer Found!!! Plaese add customers</div> : <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            {loading ? <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+            </Box> : error ? <div>There Might Be Some error {error.message}</div> : customers.length === 0 ? <div className='text-lg font-bold text-red-600'>No Customer Found!!! Plaese add customers</div> : <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 640 }}>
                     <Table stickyHeader>
-                        <TableHead sx = {{fontWeight: 'bold'}}>
+                        <TableHead sx={{ fontWeight: 'bold' }}>
                             <TableRow>
                                 <TableCell>Customer Name</TableCell>
                                 <TableCell align="center">Mobile Number</TableCell>
@@ -71,7 +85,7 @@ export default function StickyHeadTable() {
                             {customers
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row) => (
-                                    <CustomerTableRow row={row} setCustomers={setCustomers} customers={customers}/>
+                                    <CustomerTableRow row={row} setCustomers={setCustomers} customers={customers} />
                                 ))}
                         </TableBody>
                     </Table>
@@ -79,7 +93,7 @@ export default function StickyHeadTable() {
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}
                     component="div"
-                    count={rows.length}
+                    count={customers.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -94,7 +108,7 @@ export default function StickyHeadTable() {
                 aria-describedby="modal-modal-description"
             >
                 <Box>
-                    <RegistrationPage handleClose = {handleClose} customers={customers} setCustomers={setCustomers}/>
+                    <RegistrationPage handleClose={handleClose} customers={customers} setCustomers={setCustomers} />
                 </Box>
 
             </Modal>

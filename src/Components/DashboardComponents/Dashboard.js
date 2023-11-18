@@ -10,10 +10,10 @@ function Dashboard() {
     const current = pathname.split("/")[2];
     return (
         <div className='flex justify-between'>
-            <div className={current === 'setup' ? 'hidden' : 'sticky top-0 w-[18%] h-[100vh]'}>
+            <div className='sticky top-0 w-[18%] h-[100vh]'>
                 <Sidebar></Sidebar>
             </div>
-            <div className={current === 'setup' ?  'w-[100%]' : 'flex flex-col w-[82%]'}>
+            <div className='flex flex-col w-[82%]'>
                 <DashboardNav></DashboardNav>
                 <Outlet></Outlet>
             </div>

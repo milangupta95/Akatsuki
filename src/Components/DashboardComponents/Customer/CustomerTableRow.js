@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import TableRow from '@mui/material/TableRow';
-import { styled } from '@mui/material/styles';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableCell from '@mui/material/TableCell';
 import { Box, Button, ButtonGroup, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -9,30 +8,10 @@ import CustomerUpdateForm from './CutomerUpdateForm';
 import { Modal } from '@mui/material'
 import SendMessageForm from './SendMessageForm';
 import CouponForCustomer from '../Coupons/CouponForCustomer';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Link } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close'
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.info.dark,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
-
+import { api } from '../utility/api';
+import { Snackbar, Alert } from '@mui/material'
 
 function CustomerTableRow(props) {
     let row = props.row;
@@ -48,25 +27,48 @@ function CustomerTableRow(props) {
     const handlemessageModalOpen = () => { setMessageModalOpen(true) }
     const handleCouponModalOpen = () => { setCouponModalOpen(true) }
     const handleCouponModalClose = () => { setCouponModalOpen(false) }
-    const handleDelete = () => {
-        let filteredCustomers = customers.filter((cust) => {
-            console.log(cust.id + " " + customer.id);
-            return cust.id !== customer.id;
-        });
-        console.log(customer);
-        console.log(filteredCustomers);
-        setCustomers(filteredCustomers);
+    const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState("success");
+    const [showNotification, setShowNotification] = React.useState(false);
+    const handleDelete = async () => {
+        try {
+            const res = await api.delete(`customer/${customer.customer_id}`);
+            if (res) {
+                if (res.status === 200) {
+                    let filteredCustomers = customers.filter((cust) => cust.customer_id != customer.customer_id);
+                    setCustomers(filteredCustomers);
+                    setMessage("Data deleted Successfully");
+                    setMessageType("success");
+                    setShowNotification(true);
+                } else {
+                    setMessage("There is Some Error");
+                    setMessageType("error");
+                    setShowNotification(true);
+                }
+            }
+        } catch (err) {
+            setMessage(err.message);
+            setMessageType("error");
+            setShowNotification(true);
+        }
+        // let filteredCustomers = customers.filter((cust) => {
+        //     console.log(cust.id + " " + customer.id);
+        //     return cust.id !== customer.id;
+        // });
+        // console.log(customer);
+        // console.log(filteredCustomers);
+        // setCustomers(filteredCustomers);
     }
 
     return (
         <TableRow key={customer.num}>
             <TableCell component="th" scope="row" className='flex items-center justify-between'>
-                <Link to={`/dashboard/customer?id=${customer.id}`}><p className='cursor-pointer text-sky-600'>{customer.name}</p></Link>
+                <Link to={`/dashboard/customer?id=${customer.customer_id}`}><p className='cursor-pointer text-sky-600'>{customer.first_name + " " + customer.last_name}</p></Link>
             </TableCell>
-            <TableCell align="center">{customer.mobile}</TableCell>
+            <TableCell align="center">{customer.phone_number}</TableCell>
             <TableCell align="center">{customer.email}</TableCell>
             <TableCell align="center">{customer.address}</TableCell>
-            <TableCell align="center">{"$10"}</TableCell>
+            <TableCell align="center">{customer.total_bill_amount}</TableCell>
             <TableCell align="center">
                 <ButtonGroup variant="outlined" size='small'>
                     <Button color='secondary' onClick={handleupdateModalOpen}>
@@ -130,6 +132,12 @@ function CustomerTableRow(props) {
                 </Box>
 
             </Modal>
+
+            <Snackbar open={showNotification} autoHideDuration={6000} onClose={() => setShowNotification(false)} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+                <Alert onClose={() => setShowNotification(false)} severity={messageType} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </TableRow>
     )
 }

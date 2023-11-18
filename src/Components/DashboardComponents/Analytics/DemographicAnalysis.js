@@ -39,79 +39,53 @@ const data2 = [
 function DemographicAnalysis() {
     return (
         <div className='w-full flex justify-between'>
-            
-            <div className='w-[29%] flex flex-col rounded-lg shadow-lg justify-center'>
-            <h1 className='text-xl font-bold p-2'>Summary</h1>
-                <div className='flex flex-col h-[50%]  p-2 bg-blue-200 w-[full] [&>*]:mr-2 last:mr-0 [&>*]:mb-8'>
-                    <div className='flex w-[full] items-center justify-between'>
-                        <div className='w-[50%]'>
-                            <p className='text-xl'>{179}</p>
-                            <p className='text-sm font-bold text-sky-500'>{'Individual Engagers'}</p>
+            <div className='w-[31%] h-[535px] flex flex-col rounded-lg shadow-sm justify-center'>
+                <div className='flex flex-col justify-center h-[70%] rounded-t-lg  p-2 bg-[#DEE1F1] space-y-8'>
+                    <h1 className='text-xl text-center font-bold p-2'>Summary</h1>
+                    <div className='flex w-[full] items-center justify-center space-x-8'>
+                        <div className='w-[30%] text-center'>
+                            <p className='text-2xl font-bold'>{279}</p>
+                            <p className='text-lg font-bold text-[#5A67BA]'>{'Individual Engager'}</p>
                         </div>
-                        <div className='w-[50%]'>
-                            <p className='text-xl'>{279}</p>
-                            <p className='text-sm font-bold text-sky-500'>{'Group Engagers'}</p>
+                        <div className='w-[30%] text-center'>
+                            <p className='text-2xl font-bold'>{379}</p>
+                            <p className='text-lg font-bold text-[#5A67BA]'>{'Group Engager'}</p>
                         </div>
                     </div>
-                    <div className='flex w-[full] items-center justify-between'>
-                        <div className='w-[50%]'>
-                            <p className='text-xl'>{279}</p>
-                            <p className='text-sm font-bold text-sky-500'>{'Individual Footfall'}</p>
+                    <div className='flex w-[full] items-center justify-center space-x-8'>
+                        <div className='w-[30%] text-center'>
+                            <p className='text-2xl font-bold'>{279}</p>
+                            <p className='text-lg font-bold text-[#5A67BA]'>{'Individual Footfall'}</p>
                         </div>
-                        <div className='w-[50%]'>
-                            <p className='text-xl'>{379}</p>
-                            <p className='text-sm font-bold text-sky-500'>{'Group Footfall'}</p>
+                        <div className='w-[30%] text-center'>
+                            <p className='text-2xl font-bold'>{379}</p>
+                            <p className='text-lg font-bold text-[#5A67BA]'>{'Group Footfall'}</p>
                         </div>
                     </div>
                 </div>
-                <div className='p-4 shadow-lg space-y-2 mx-[auto] bg-white w-[95%] mt-[-100px] rounded-lg h-[50%] z-[1000] flex flex-col'>
-                    <div className='flex flex-col mx-[auto] w-[full]'>
-                        <div className='text-sky-300 text-xl font-semibold'>Total Footfall</div>
-                        <div className='text-xl text-center'>1179</div>
+                <div className='flex shadow-lg mx-[auto] bg-[#5A67BA] w-full h-[30%] rounded-b-lg p-2 pt-10 justify-between'>
+                    <div className='w-[30%] text-center'>
+                        <p className='text-2xl font-bold'>{1179}</p>
+                        <p className='text-sm font-bold text-white'>{'Total Footfall'}</p>
+                    </div>
+                    <div className='w-[30%] text-center'>
+                        <p className='text-2xl font-bold'>{379}</p>
+                        <p className='text-sm font-bold text-white'>{'Bounced Footfall'}</p>
                     </div>
 
-                    <div className='flex flex-col mx-[auto] w-[full]'>
-                        <div className='text-sky-300 text-xl font-semibold'>Bounced Footfall</div>
-                        <div className='text-xl text-center'>379</div>
+                    <div className='w-[30%] text-center'>
+                        <p className='text-2xl font-bold'>{279}</p>
+                        <p className='text-sm font-bold text-white'>{'Missed Oppurtunities'}</p>
                     </div>
-
-                    <div className='flex flex-col mx-[auto] w-[full]'>
-                        <div className='text-sky-300 text-xl font-semibold'>Missed Oppurtunities</div>
-                        <div className='text-xl text-center'>300</div>
-                    </div>
-
-                    <div className='flex flex-col mx-[auto] w-[full]'>
-                        <div className='text-sky-300 text-xl font-semibold'>Conversion</div>
-                        <div className='text-xl text-center'>500</div>
+                    <div className='w-[30%] text-center'>
+                        <p className='text-2xl font-bold'>{379}</p>
+                        <p className='text-sm font-bold text-white'>{'Converted Footfalls'}</p>
                     </div>
                 </div>
             </div>
-            <div className='w-[70%] flex flex-col'>
-                <div className='flex flex-wrap justify-center [&>*]:mr-2 last:mr-0'>
-                    <NormalBox row={{
-                        name: "Male Footfall",
-                        value: 200,
-                        baseval: 1179
-                    }} />
-                    <NormalBox row={{
-                        name: "Male Engagers",
-                        value: 180,
-                        baseval: 1179
-                    }} />
-                    <NormalBox row={{
-                        name: "Female Footfall",
-                        value: 200,
-                        baseval: 1179
-                    }} />
-                    <NormalBox row={{
-                        name: "Female Engagers",
-                        value: 200,
-                        baseval: 1179
-                    }} />
-                </div>
-                <div className='w-full h-[400px] p-2 pb-6 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] rounded-lg'>
+            <div className='w-[68%] flex flex-col space-y-2'>
+                <div className='w-full h-[400px] p-2 pb-6 shadow-sm shadow-gray-500 rounded-lg'>
                     <h1 className='font-bold text-xl'>Demographic Analysis</h1>
-
                     <ResponsiveBar
                         data={data2}
                         keys={[
@@ -225,6 +199,28 @@ function DemographicAnalysis() {
                         ariaLabel="Nivo bar chart demo"
                         barAriaLabel={e => e.id + ": " + e.formattedValue + " in country: " + e.indexValue}
                     />
+                </div>
+                <div className='flex flex-wrap justify-between [&>*]:mr-2 last:mr-0'>
+                    <NormalBox row={{
+                        name: "Male Footfall",
+                        value: 200,
+                        baseval: 1179
+                    }} />
+                    <NormalBox row={{
+                        name: "Male Engagers",
+                        value: 180,
+                        baseval: 1179
+                    }} />
+                    <NormalBox row={{
+                        name: "Female Footfall",
+                        value: 200,
+                        baseval: 1179
+                    }} />
+                    <NormalBox row={{
+                        name: "Female Engagers",
+                        value: 200,
+                        baseval: 1179
+                    }} />
                 </div>
             </div>
 

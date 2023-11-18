@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { Box,CircularProgress } from '@mui/material';
 import CouponTableRow from './CouponTableRow';
 
 const columns = [
@@ -50,26 +51,13 @@ const columns = [
   }
 ];
 
-const coupons = [
-    {
-        "id" : "1",
-        "code": "DIWALI500",
-        "date_created" : "05/07/2023",
-        "date_expiry" : "06/07/2023",
-        "min_purchase_val" : 1000,
-        "discount" : "25%",
-        "prev_purchase_value" : 5000,
-        "prev_freq_value" : 3,
-        "description" : "Buy 1 get 1 Free",
-        "discount_type" : "percentage"
-    },
-]
 
 
-export default function CouponsTable() {
+
+export default function CouponsTable({coupons,setCoupons,loading,setLoading,error,setError}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -80,16 +68,18 @@ export default function CouponsTable() {
   };
 
   return (
-    <Paper sx={{ width: '100%' }}>
+    loading ? <Box sx={{ display: 'flex' }}>
+      <CircularProgress />
+    </Box> : error ? <div>There Might Be Some error</div> : <Paper sx={{ width: '100%' }}>
       <TableContainer sx={{ maxHeight: 600 }}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead sx = {{backgroundColor: 'secondary'}}>
+          <TableHead sx={{ backgroundColor: 'secondary' }}>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={'center'}
-                  style={{minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
                 </TableCell>
@@ -101,7 +91,7 @@ export default function CouponsTable() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <CouponTableRow coupon = {row}/>
+                  <CouponTableRow coupon={row} coupons={coupons} setCoupons={setCoupons} />
                 );
               })}
           </TableBody>

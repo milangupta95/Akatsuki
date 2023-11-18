@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from './Components/PublicComponents/Navbar';
-import { deepPurple, violet, red, grey, blueGrey } from '@mui/material/colors';
+import { deepPurple, violet, red, grey, blueGrey, purple } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Navigate, Route } from 'react-router';
 import { Routes } from 'react-router-dom';
@@ -24,7 +24,10 @@ function App() {
     palette: {
       info: deepPurple,
       error: red,
-      secondary: blueGrey
+      secondary: blueGrey,
+      primary: {
+        main: "#5A6ACF"
+      }
     },
   });
   return (

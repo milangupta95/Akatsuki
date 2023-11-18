@@ -1,32 +1,56 @@
-import { Button, TextField, InputAdornment, IconButton } from '@mui/material'
+import { Button, TextField, InputAdornment, IconButton, formGroupClasses } from '@mui/material'
 import React, { useState } from 'react'
 import PhoneIcon from '@mui/icons-material/Phone';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import HomeIcon from '@mui/icons-material/Home';
 import CloseIcon from '@mui/icons-material/Close';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import { Rating } from '@mui/material';
+import { api } from '../utility/api';
+import { Snackbar, Alert } from '@mui/material';
+import {FormControl,FormControlLabel,RadioGroup,Radio,FormLabel} from '@mui/material'
 
 function CustomerUpdateForm(props) {
     let setCustomer = props.setCustomer;
     let customer = props.customer;
-    const [mobileNumber, setMobileNumber] = useState(customer.mobile)
-    const [fname, setfName] = useState(customer.name.split(" ")[0])
-    const [lname, setLName] = useState(customer.name.split(" ")[1])
+    const [mobileNumber, setMobileNumber] = useState(customer.phone_number)
+    const [fname, setfName] = useState(customer.first_name)
+    const [lname, setLName] = useState(customer.last_name)
     const [email, setEmail] = useState(customer.email)
     const [address, setAddress] = useState(customer.address)
-    
-    const handleUpdate = () => {
-        setCustomer((cutomer) => {
-            return {
-                ...customer,
-                name : fname + lname,
-                mobile: mobileNumber,
+    const [gender,setGender] = useState(customer.gender);
+    const [age,setAge] = useState(customer.age);
+    const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState("success");
+    const [showNotification, setShowNotification] = React.useState(false);
+
+    const handleUpdate = async () => {
+        try {
+            let res = await api.put(`customer/${customer.customer_id}`, {
+                phone_number: mobileNumber,
+                first_name: fname,
+                last_name: lname,
                 email: email,
-                address: address
+                address: address,
+                age: age,
+                gender: gender
+            });
+            if (res) {
+                if (res.status === 200) {
+                    setCustomer(res.data);
+                    setMessage("Data Updated Successfully");
+                    setMessageType("success");
+                    setShowNotification(true);
+                } else {
+                    setMessage("There is Some Error While Deleting");
+                    setMessageType("error");
+                    setShowNotification(true);
+                }
             }
-        })
+        } catch (err) {
+            setMessage(err.message);
+            setMessageType("error");
+            setShowNotification(true);
+        }
     }
 
     let handleClose = props.handleClose;
@@ -114,18 +138,40 @@ function CustomerUpdateForm(props) {
                             />
                         </div>
 
-                        
+
                         <div className='flex items-center justify-between'>
+                            <div className='flex items-center justify-between w-[49%]'>
+                                <FormControl>
+                                    <FormLabel>Gender</FormLabel>
+                                    <RadioGroup
+                                        row
+                                        value={gender}
+                                        onChange={(e) => setGender(e.target.value)}
+                                    >
+                                        <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                        <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                    </RadioGroup>
+                                </FormControl>
+
+                                <TextField value={age} type='number' min={5} onChange={(e) => setAge(e.target.value)}
+                                    placeholder='Age' className='w-20' />
+
+                            </div>
                             <button
                                 variant='contained'
                                 onClick={handleUpdate}
-                                className='w-[100%] bg-purple-800 p-2 rounded-lg h-[55px] text-white font-bold disabled:bg-slate-100 disabled:text-gray-300'
+                                className='w-[49%] bg-purple-800 p-2 rounded-lg h-[55px] text-white font-bold disabled:bg-slate-100 disabled:text-gray-300'
                                 style={{}}
                             >Update Data</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <Snackbar open={showNotification} autoHideDuration={6000} onClose={() => setShowNotification(false)} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+                <Alert onClose={() => setShowNotification(false)} severity={messageType} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }

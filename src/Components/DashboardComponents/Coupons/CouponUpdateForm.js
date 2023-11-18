@@ -14,7 +14,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
-
+import {Snackbar,Alert} from '@mui/material';
+import { api } from '../utility/api';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -49,24 +50,23 @@ function a11yProps(index) {
     };
 }
 
-function CouponUpdateForm(props) {
-    let handleClose = props.handleClose;
-    let coupon = props.coupon;
-    const [couponCode, setcouponCode] = useState(coupon.code);
+function CouponUpdateForm({coupon,handleClose,setCoupon}) {
+    const [couponCode, setcouponCode] = useState(coupon.coupon_code);
     const [description, setDescription] = useState(coupon.description);
     const [discountType, setDiscountType] = useState(coupon.discount_type);
     const [value, setValue] = React.useState(0);
-    const [expiry, setExpiry] = React.useState(dayjs(coupon.date_expiry));
-    const [discountValue, setDiscountValue] = useState(coupon.discount);
-    const [previousPurchase, setpreviousPurchase] = useState(coupon.prev_purchase_value);
-    const [freqvisit, setFreqvis] = useState(coupon.prev_freq_value);
-    const [purchaseValue,setPurchaseValue] = useState(coupon.min_purchase_val);
-
+    const [expiry, setExpiry] = React.useState(dayjs(coupon.expiry_date));
+    const [discountValue, setDiscountValue] = useState(coupon.coupon_amount);
+    const [previousPurchase, setpreviousPurchase] = useState(coupon.prev_purchase_amount);
+    const [freqvisit, setFreqvis] = useState(coupon.visit_frequency);
+    const [purchaseValue, setPurchaseValue] = useState(coupon.min_purchase_val);
+    const [message, setMessage] = useState("");
+    const [messageType,setMessageType] = useState("success");
     const handleDiscountChange = (e) => {
         setDiscountType(e.target.value);
     };
 
-    const handleChange = (event,newValue) => {
+    const handleChange = (event, newValue) => {
         setValue(newValue);
     }
 
@@ -74,9 +74,39 @@ function CouponUpdateForm(props) {
         setcouponCode("DIWALI500");
     }
 
-    const updateCoupon = () => {
-
+    const updateCoupon = async () => {
+        try {
+            let newCoupon = {
+                "coupon_code": couponCode,
+                "description": description,
+                "discount_type": discountType,
+                "coupon_amount": (Number)(discountValue),
+                "min_purchase_val": (Number)(purchaseValue),
+                "expiry_date": expiry,
+                "prev_purchase_amount": (Number)(previousPurchase),
+                "visit_frequency": (Number)(freqvisit)
+            }
+            const res = await api.put(`/coupon/${coupon.coupon_id}`, newCoupon);
+            if (res) {
+                if (res.status === 200) {
+                    setMessage("Coupon Updated SuccessFully");
+                    setMessageType("success");
+                    setShowNotification(true);
+                    setCoupon(res.data);
+                } else {
+                    setMessage("There Might Be Some Error");
+                    setMessageType("error");
+                    setShowNotification(true);
+                }
+            }
+        } catch (err) {
+            setMessage("There Might Be Some Error")
+            setMessageType("error");
+            setShowNotification(true);
+        }
     }
+
+    const [showNotification, setShowNotification] = React.useState(false);
 
     return (
         <div className='flex h-[100vh] justify-center w-[100vw] p-2 items-center'>
@@ -215,6 +245,11 @@ function CouponUpdateForm(props) {
 
                 </div>
             </div>
+            <Snackbar open={showNotification} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+                <Alert onClose={() => setShowNotification(false)} severity={messageType} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }

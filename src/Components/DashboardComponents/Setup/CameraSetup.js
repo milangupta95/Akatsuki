@@ -8,7 +8,7 @@ function CameraSetup() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
-    <div className='p-2 shadow-md rounded-lg w-[49%] space-y-4'>
+    <div className='p-2 shadow-md rounded-lg w-full space-y-4'>
       <div className='flex items-center justify-between'>
         <h1 className='text-xl font-bold text-violet-800'>Setup Zones</h1>
         <Button
