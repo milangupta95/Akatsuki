@@ -7,10 +7,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { IconButton,ButtonGroup,Button } from '@mui/material';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ZoneTableRows from './ZoneTableRows';
 const rows = [
     {
@@ -21,8 +17,7 @@ const rows = [
     }
 ]
 
-export default function ZonesTable() {
-    const [zones,setZones] = useState(rows)
+export default function ZonesTable({cameras,setCameras}) {
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650,maxHeight:200 }} size="small" aria-label="a dense table">
@@ -37,8 +32,8 @@ export default function ZonesTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {zones.map((row) => (
-                        <ZoneTableRows row = {row} zones={zones} setZones={setZones}/>
+                    {cameras.map((row,idx) => (
+                        <ZoneTableRows s_no={idx + 1} row = {row} zones={cameras} setZones={setCameras}/>
                     ))}
                 </TableBody>
             </Table>

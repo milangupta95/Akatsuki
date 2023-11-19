@@ -3,30 +3,30 @@ import GeneralSetup from './GeneralSetup'
 import CameraSetup from './CameraSetup'
 import ROISetup from './ROISetup'
 import { Chrono } from "react-chrono";
+import MultiStepProgressBar from '../utility/MultiStepProgressBar/MultiStepProgressBar';
 
 function Setup() {
-  const [index, setIndex] = useState(1);
-  const items = [{
-    title: "General Setup",
-    cardTitle: "General Setup",
-    url: "http://www.history.com",
-    cardSubtitle: "General Setup of the shop",
-    cardDetailedText: "Provide General Info Such as Brand Logo,Brand Name etc",
-  },
-  {
-    title: "Zone Setup",
-    cardTitle: "Zone Setup",
-    url: "http://www.history.com",
-    cardSubtitle: "General Setup of the shop",
-    cardDetailedText: "Provide General Info Such as Brand Logo,Brand Name etc",
-  },
-  {
-    title: "ROI Setup",
-    cardTitle: "ROI Setup",
-    url: "http://www.history.com",
-    cardSubtitle: "General Setup of the shop",
-    cardDetailedText: "Provide General Info Such as Brand Logo,Brand Name etc",
-  }];
+  const [page, setPage] = useState("pageone");
+
+  const nextPage = (page) => {
+    setPage(page);
+  };
+
+  const nextPageNumber = (pageNumber) => {
+    switch (pageNumber) {
+      case "1":
+        setPage("pageone");
+        break;
+      case "2":
+        setPage("pagetwo");
+        break;
+      case "3":
+        setPage("pagethree");
+        break;
+      default:
+        setPage("1");
+    }
+  };
   return (
     <div className='p-2 space-y-8'>
       <div
@@ -36,20 +36,16 @@ function Setup() {
         }}
         className='flex justify-center'
       >
-        <div className='w-[50%]'>
-          <Chrono items={items} activeItemIndex={index} onItemSelected={(ind) => {
-            setIndex(ind.index);
-            console.log(ind.index);
-          }} />
+        <div className='w-[100%]'>
+          <MultiStepProgressBar page={page} onPageNumberClick={nextPageNumber} />
+          {
+            {
+              pageone: <GeneralSetup onButtonClick={nextPage}/>,
+              pagetwo: <CameraSetup onButtonClick={nextPage} />,
+              pagethree: <ROISetup onButtonClick={nextPage} />,
+            }[page]
+          }
         </div>
-
-      </div>
-      <div className='justify-center flex w-full'>
-        {
-          index === 0 ? <GeneralSetup></GeneralSetup> :
-            index === 1 ? <CameraSetup></CameraSetup> :
-              <ROISetup />
-        }
       </div>
     </div>
   )

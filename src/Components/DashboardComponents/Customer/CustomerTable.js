@@ -27,7 +27,7 @@ export default function StickyHeadTable() {
         (async () => {
             setLoading(true);
             try {
-                const res = await api.get("/customer");
+                const res = await api.get("/customer/");
                 if (res) {
                     if (res.status === 200) {
                         setCustomers(res.data);

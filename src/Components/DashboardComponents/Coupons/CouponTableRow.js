@@ -61,7 +61,7 @@ function CouponTableRow({coupon,coupons,setCoupons}) {
     const [showNotification, setShowNotification] = React.useState(false);
     const deletecoupon = async () => {
         try {
-            const res = await api.delete(`/coupon/${coupo.coupon_id}`);
+            const res = await api.delete(`/coupon/${coupo.coupon_id}/`);
             if (res) {
                 if (res.status === 200) {
                     setMessage("Coupon Deleted SuccessFully");

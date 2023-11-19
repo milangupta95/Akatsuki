@@ -33,7 +33,7 @@ function RegistrationPage(props) {
         try {
             if (mobileNumber && mobileNumber.length === 10) {
                 console.log(mobileNumber);
-                let customerRes = await api.get(`/customer/retrieve/${mobileNumber}`);
+                let customerRes = await api.get(`/customer/retrieve/${mobileNumber}/`);
                 if (customerRes) {
                     console.log(customerRes);
                     setOtherDisabled(false);
@@ -86,7 +86,7 @@ function RegistrationPage(props) {
                 "age" : age
             }
             if (!customer) {
-                let res = await api.post("/customer", newCustomer);
+                let res = await api.post("/customer/", newCustomer);
                 if (res) {
                     if (res.status === 200) {
                         const cust = res.data;
@@ -97,7 +97,7 @@ function RegistrationPage(props) {
                         setCustomers(
                             newCustomers
                         );
-                        let purchaseRes = await api.post("/purchase", {
+                        let purchaseRes = await api.post("/purchase/", {
                             product_name: "",
                             product_price: billAmmount,
                             customer_id: cust.customer_id
@@ -131,10 +131,10 @@ function RegistrationPage(props) {
                     "gender" : gender,
                     "age" : age
                 }
-                let res = await api.put(`/customer/${customer.customer_id}`, oldCustomer);
+                let res = await api.put(`/customer/${customer.customer_id}/`, oldCustomer);
                 if (res) {
                     if (res.status === 200) {
-                        let purchaseRes = await api.post("/purchase", {
+                        let purchaseRes = await api.post("/purchase/", {
                             product_name: "",
                             product_price: billAmmount,
                             customer_id: res.data.customer_id

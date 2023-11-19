@@ -1,59 +1,117 @@
 import React from 'react'
 import { ResponsiveBar } from '@nivo/bar'
+import { useState,useEffect } from 'react';
+import { api } from '../utility/api';
+import { CircularProgress } from '@mui/material';
 
-function MonthlyPurchaseGraph() {
-    const data = [
-        {
-            month : "Jan",
-            purchase : 100
-        },
-        {
-            month : "Feb",
-            purchase : 1000
-        },
-        {
-            month : "Mar",
-            purchase : 0
-        },
-        {
-            month : "Apr",
-            purchase : 0
-        },
-        {
-            month : "May",
-            purchase : 0
-        },
-        {
-            month : "Jun",
-            purchase : 1200
-        },
-        {
-            month : "Jul",
-            purchase : 0
-        },
-        {
-            month : "Aug",
-            purchase : 0
-        },
-        {
-            month : "Sept",
-            purchase : 0
-        },
-        {
-            month : "Oct",
-            purchase : 0
-        },
-        {
-            month : "Nov",
-            purchase : 0
-        },
-        {
-            month : "Dec",
-            purchase : 0
-        },
-    ]
+function generateDataWithMonth(data) {
+    let arr = [];
+    for(let i=0;i<data.length;i++) {
+        switch(i) {
+            case 0:
+                arr.push({
+                    month : "Jan",
+                    purchase: data[i]
+                })
+                break;
+            case 1:
+                arr.push({
+                    month : "Feb",
+                    purchase: data[i]
+                })
+                break;
+            case 2:
+                arr.push({
+                    month : "Mar",
+                    purchase: data[i]
+                })
+                break;
+            case 3:
+                arr.push({
+                    month : "Apr",
+                    purchase: data[i]
+                })
+                break;
+            case 4:
+                arr.push({
+                    month : "May",
+                    purchase: data[i]
+                })
+                break;
+            case 5:
+                arr.push({
+                    month : "Jun",
+                    purchase: data[i]
+                })
+                break;
+            case 6:
+                arr.push({
+                    month : "Jul",
+                    purchase: data[i]
+                })
+                break;
+            case 7:
+                arr.push({
+                    month : "Aug",
+                    purchase: data[i]
+                })
+                break;
+            case 8:
+                arr.push({
+                    month : "Sep",
+                    purchase: data[i]
+                })
+                break;
+            case 9:
+                arr.push({
+                    month : "Oct",
+                    purchase: data[i]
+                })
+                break;
+            case 10:
+                arr.push({
+                    month : "Nov",
+                    purchase: data[i]
+                })
+                break;
+            case 11:
+                arr.push({
+                    month : "Dec",
+                    purchase: data[i]
+                })
+                break;
+        }
+    }
+    return arr;
+}
+function MonthlyPurchaseGraph({customer_id,year}) {
+    const [data, setData] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+    console.log(customer_id);
+    useEffect(() => {
+        (async function getData() {
+            setLoading(true);
+            try {
+                let res = await api.get(`/purchase/year/${customer_id}?year=${year}`);
+                if (res) {
+                    console.log(res);
+                    if (res.status === 200) {
+                        let monthlyData = generateDataWithMonth(res.data);
+                        setData(monthlyData);
+                    } else {
+                        setError("There Might Be Some Error");
+                    }
+                }
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+                setError(err.message);
+            }
+        })()
+    }, [year]);
     return (
-        <ResponsiveBar
+        loading ? <CircularProgress></CircularProgress> : error ? <div>{error}</div> :<ResponsiveBar
             data={data}
             keys={[
                 'purchase',

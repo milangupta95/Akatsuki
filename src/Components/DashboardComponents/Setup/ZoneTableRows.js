@@ -8,7 +8,7 @@ import { useState } from 'react'
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 
-function ZoneTableRows({ row, zones, setZones }) {
+function ZoneTableRows({ row, zones, setZones,s_no }) {
     const [editMode, setEditMode] = useState(false);
     const [zone, setZone] = useState(row);
 
@@ -24,18 +24,17 @@ function ZoneTableRows({ row, zones, setZones }) {
         setZone(row);
         setEditMode(false);
     }
-
     return (
         !editMode ? <TableRow
-            key={row.id}
+            key={row.s_no}
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
             <TableCell component="th" scope="zone">
-                {zone.s_no}
+                {s_no}
             </TableCell>
             <TableCell align="center">{zone.zone_name}</TableCell>
-            <TableCell align="center">{zone.camera_ip}</TableCell>
-            <TableCell align="center">{zone.zone_type}</TableCell>
+            <TableCell align="center">{zone.camera_id}</TableCell>
+            <TableCell align="center">{zone.camera_type}</TableCell>
             <TableCell align="center">
                 <IconButton>
                     <RemoveRedEyeIcon />

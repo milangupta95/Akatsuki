@@ -59,7 +59,7 @@ function CustomerProfile() {
                 "day": "2023-07-08"
             }]
     const moveToCustomerPage = () => {
-        navigate('/dashboard/customers')
+        navigate('/customers')
     }
     return (
         loading ? <CircularProgress></CircularProgress> : error ? <div>{error}</div>:<div>
@@ -98,7 +98,7 @@ function CustomerProfile() {
                         <h1 className='font-xl font-bold text-violet-800'>Customer Store Visits</h1>
                         <TextField type='number' size='small' sx={{ width: 100 }} value={year} onChange={(e) => setYear(e.target.value)} />
                     </div>
-                    <StoreVisitGraph data={storeVisitData} />
+                    <StoreVisitGraph data={storeVisitData} customer_id={customer_id}/>
                 </div>
 
                 <div className='w-[49%] h-[400px] rounded-lg shadow-md p-2'>
@@ -106,7 +106,7 @@ function CustomerProfile() {
                         <h1 className='font-xl font-bold text-violet-800'>Customer Monthly Purchases</h1>
                         <TextField type='number' size='small' sx={{ width: 100 }} value={year} onChange={(e) => setYear(e.target.value)} />
                     </div>
-                    <MonthlyPurchaseGraph />
+                    <MonthlyPurchaseGraph customer_id={customer_id} year={year}/>
                 </div>
             </div>
 

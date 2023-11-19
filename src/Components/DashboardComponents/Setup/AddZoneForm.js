@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { Stack, Chip } from '@mui/material';
+import { api } from '../utility/api';
 
 function AddZoneForm(props) {
     const [zones, setZones] = useState([]);
@@ -10,27 +11,44 @@ function AddZoneForm(props) {
     const [cameraip, setcameraip] = useState("");
     const [zoneType, setZoneType] = useState("product");
     const [zoneImage, setzoneImage] = useState(null);
+    const [zoneName, setZoneName] = useState();
 
-    const handleAddZone = () => {
-        
-    }
-
-
-    const addnewZone = () => {
-        const newZone = [
-            ...zones,
-            {
-                id: zones.length,
-                name: currentZoneName,
-                zoneImage: zoneImage
+    const handleAddZone = async () => {
+        try {
+            let res = await api.post("/setup/camera/", {
+                "zone_name": zoneName,
+                "zone_image": zoneImage,
+                "camera_id": cameraip,
+                "camera_type": zoneType
+            });
+            if (res) {
+                if (res.status === 200) {
+                    const newZone = [
+                        ...zones,
+                        {
+                            id: zones.length,
+                            name: currentZoneName,
+                            zoneImage: zoneImage
+                        }
+                    ]
+                    setZones(newZone);
+                    setcurrentZoneName("");
+                    setzoneImage(null);
+                    window.alert("Added SuccessFully");
+                } else {
+                    window.alert("There is Some Error While Adding a new Camera");
+                }
             }
-        ]
-        setZones(newZone);
-        setcurrentZoneName("");
-        setzoneImage(null);
+        } catch (err) {
+            window.alert(err.message);
+        }
     }
 
 
+    const addnewZone = async () => {
+
+
+    }
 
     const handleChipDelete = (dataTobeDeleted) => {
         const newZone = zones.filter(zone => zone.id !== dataTobeDeleted.id);
@@ -47,15 +65,14 @@ function AddZoneForm(props) {
                 </IconButton>
             </div>
 
-            <div>
-                <label className='w-[100%] text-lg font-bold'>Add Zones</label>
-                <div className='w-full flex justify-between items-center'>
+            {/* <div> */}
+            {/* <label className='w-[100%] text-lg font-bold'>Add Zones</label> */}
+            {/* <div className='w-full flex justify-between items-center'>
                     <TextField
                         height='medium'
                         placeholder='Zone Name'
                         value={currentZoneName}
                         onChange={(e) => setcurrentZoneName(e.target.value)}>
-
                     </TextField>
 
                     <Button
@@ -81,7 +98,15 @@ function AddZoneForm(props) {
                     zones.map((zone) => {
                         return (<Chip label={zone.name} id={zone.id} color='primary' onDelete={() => handleChipDelete(zone)}/>)
                     })}
-            </Stack>
+            </Stack> */}
+            <div className='w-full flex justify-between items-center'>
+                <label className='w-[39%] text-lg font-bold'>Zone Name</label>
+                <TextField
+                    className='w-[59%]'
+                    placeholder='Zone Name'
+                    value={zoneName}
+                    onChange={(e) => setZoneName(e.target.value)}></TextField>
+            </div>
             <div className='w-full flex justify-between items-center'>
                 <label className='w-[39%] text-lg font-bold'>Camera IP</label>
                 <TextField
@@ -100,6 +125,14 @@ function AddZoneForm(props) {
                     <MenuItem value={"product"}>Product</MenuItem>
                     <MenuItem value={"entrance"}>Entrance</MenuItem>
                 </Select>
+            </div>
+            <div className='w-full flex justify-between items-center'>
+                <label className='w-[39%] text-lg font-bold'>Zone Image URL</label>
+                <TextField
+                    className='w-[59%]'
+                    placeholder='Zone Image URL'
+                    value={zoneImage}
+                    onChange={(e) => setzoneImage(e.target.value)}></TextField>
             </div>
             <div className='w-full flex justify-between items-center'>
 

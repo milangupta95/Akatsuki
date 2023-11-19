@@ -21,7 +21,7 @@ export default function CouponForCustomer({handleClose,customer_id}) {
         (async function getData() {
             setLoading(true);
             try {
-                let res = await api.get(`/coupon/${customer_id}`);
+                let res = await api.get(`/coupon/${customer_id}/`);
                 if (res) {
                     if (res.status === 200) {
                         setCoupons(res.data);

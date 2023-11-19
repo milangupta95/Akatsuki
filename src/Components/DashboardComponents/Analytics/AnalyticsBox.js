@@ -23,8 +23,8 @@ function AnalyticsBox(props) {
                     strokeWidth={12}
                     styles={buildStyles({
                         strokeLinecap: "butt",
-                        pathColor: "#1B59F8",
-                        textColor: "#1B59F8"
+                        pathColor: "#7F00FF",
+                        textColor: "#7F00FF"
                     })}
                 >
                     <RadialSeparators

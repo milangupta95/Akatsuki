@@ -19,7 +19,7 @@ function Coupons() {
         (async () => {
             setLoading(true);
             try {
-                const res = await api.get("/coupon");
+                const res = await api.get("/coupon/");
                 if (res) {
                     if (res.status === 200) {
                         setCoupons(res.data);
