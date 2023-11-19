@@ -35,8 +35,6 @@ function ROISetup() {
   const clearLines = () => {
     setLines([]);
   };
-
-
   return (
     <div className='flex justify-center'>
       <div>
