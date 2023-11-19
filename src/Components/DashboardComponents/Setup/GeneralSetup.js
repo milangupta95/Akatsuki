@@ -10,7 +10,7 @@ import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import ImageIcon from '@mui/icons-material/Image';
 import { api } from '../utility/api';
 
-function GeneralSetup({setPage,nextPage}) {
+function GeneralSetup({onButtonClick}) {
   const [shop, setShop] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -42,7 +42,7 @@ function GeneralSetup({setPage,nextPage}) {
   // const [address, setAddress] = useState(shop.address);
   // const [imageUrl, setImageUrl] = useState(shop.brand_logo);
   // const [description, setDescription] = useState(shop.description);
-  const handleSave = async () => {
+  const handleSave = async (e) => {
     try {
       let res = await api.post("/setup", {
         "shop_name": shop.shop_name,
@@ -57,8 +57,7 @@ function GeneralSetup({setPage,nextPage}) {
 
       if(res) {
         if(res.status === 200) {
-          setPage("pagetwo");
-          nextPage();
+          window.alert("Info Saved");
         } else {
           window.alert("There Might Be Some Error");
         }
@@ -254,10 +253,20 @@ function GeneralSetup({setPage,nextPage}) {
               variant='contained'
               disableElevation
               size='large'
-              className='w-[58%] h-[60px]'
+              className='w-[46%] h-[60px]'
               onClick={handleSave}
             >
               Save Info
+            </Button>
+            <Button
+              type='submit'
+              variant='contained'
+              disableElevation
+              size='large'
+              className='w-[10%] h-[60px]'
+              onClick={() => onButtonClick("pagetwo")}
+            >
+              {`Next`}
             </Button>
           </div>
         </form>

@@ -40,7 +40,7 @@ function Setup() {
           <MultiStepProgressBar page={page} onPageNumberClick={nextPageNumber} />
           {
             {
-              pageone: <GeneralSetup onButtonClick={nextPage} nextPage={nextPage} setPage={setPage}/>,
+              pageone: <GeneralSetup onButtonClick={nextPage}/>,
               pagetwo: <CameraSetup onButtonClick={nextPage} />,
               pagethree: <ROISetup onButtonClick={nextPage} />,
             }[page]

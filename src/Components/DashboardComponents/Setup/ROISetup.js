@@ -1,16 +1,40 @@
 import React, { useState } from 'react'
 import ROIPolygon from './ROIPolygon'
-import { Button, Select, MenuItem, ButtonGroup } from '@mui/material'
+import { Button, Select, MenuItem, ButtonGroup, CircularProgress } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
-
+import { api } from '../utility/api';
+import { useEffect } from 'react';
 function ROISetup() {
   const [lines, setLines] = useState([]);
-  const [zone, setZone] = useState("zone-1");
+  const [currentIdx, setcurrentIdx] = useState(0);
   const [undoHistory, setUndoHistory] = useState([]);
   const [redoHistory, setRedoHistory] = useState([]);
+  const [cameras, setCameras] = useState();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
 
+  useEffect(() => {
+    (async function loadData() {
+      setLoading(true);
+      try {
+        let res = await api.get("/setup/cameras/");
+        if (res) {
+          if (res.status === 200) {
+            setCameras(res.data);
+          } else {
+            setError("There Might Be Some Error");
+          }
+          setLoading(false);
+        }
+      } catch (err) {
+        setLoading(false);
+        setError(err.message);
+      }
+
+    })();
+  }, [])
   const undo = () => {
     if (undoHistory.length > 0) {
       const previousLines = undoHistory.pop();
@@ -36,18 +60,19 @@ function ROISetup() {
     setLines([]);
   };
   return (
-    <div className='flex justify-center'>
+    loading ? <CircularProgress></CircularProgress> : error ? <div>{error}</div> : <div className='flex justify-center'>
       <div>
         <div className='p-4 w-[600px] flex item-center justify-between shadow-md'>
           <div>
             <Select
-              value={zone}
-              onChange={(e) => setZone(e.target.value)}
+              value={currentIdx}
+              onChange={(e) => setcurrentIdx(e.target.value)}
             >
-              <MenuItem value={"zone-1"}>Zone-1</MenuItem>
-              <MenuItem value={"zone-2"}>Zone-2</MenuItem>
-              <MenuItem value={"zone-3"}>Zone-3</MenuItem>
-              <MenuItem value={"zone-4"}>Zone-4</MenuItem>
+              {
+                cameras.map((camera, idx) => {
+                  return <MenuItem value={idx}>{camera.zone_name}</MenuItem>
+                })
+              }
             </Select>
           </div>
           <div className='flex items-center'>
@@ -66,10 +91,9 @@ function ROISetup() {
               </Button>
             </ButtonGroup>
           </div>
-
         </div>
         <ROIPolygon lines={lines} undoHistory={undoHistory} setUndoHistory={setUndoHistory}
-          setRedoHistory={setRedoHistory} redoHistory={redoHistory} setLines={setLines} imageUrl={`https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D`} />
+          setRedoHistory={setRedoHistory} redoHistory={redoHistory} setLines={setLines} imageUrl={cameras[currentIdx].zone_image} />
       </div>
     </div>
   )
