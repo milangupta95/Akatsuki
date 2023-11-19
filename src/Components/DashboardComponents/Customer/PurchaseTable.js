@@ -22,7 +22,7 @@ export default function PurchaseTable({ handleClose, customer_id }) {
         (async function getData() {
             setLoading(true);
             try {
-                let res = await api.get(`/purchase/${customer_id}`);
+                let res = await api.get(`/purchase/${customer_id}/`);
                 if (res) {
                     if (res.status === 200) {
                         setPurchases(res.data);

@@ -87,7 +87,7 @@ function CouponForm({handleClose,coupons,setCoupons}) {
                 "prev_purchase_amount": (Number)(previousPurchase),
                 "visit_frequency": (Number)(freqvisit)
             }
-            const res = await api.post("/coupon", coupon);
+            const res = await api.post("/coupon/", coupon);
             if (res) {
                 if (res.status === 200) {
                     setMessage("Coupon Added SuccessFully");

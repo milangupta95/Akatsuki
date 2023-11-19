@@ -44,7 +44,7 @@ function GeneralSetup({onButtonClick}) {
   // const [description, setDescription] = useState(shop.description);
   const handleSave = async (e) => {
     try {
-      let res = await api.post("/setup", {
+      let res = await api.post("/setup/", {
         "shop_name": shop.shop_name,
         "shop_manager_name": shop.shop_manager_name,
         "coorporate_email": shop.coorporate_email,

@@ -63,7 +63,7 @@ function CustomerTableRow(props) {
     return (
         <TableRow key={customer.num}>
             <TableCell component="th" scope="row" className='flex items-center justify-between'>
-                <Link to={`/dashboard/customer?id=${customer.customer_id}`}><p className='cursor-pointer text-sky-600'>{customer.first_name + " " + customer.last_name}</p></Link>
+                <Link to={`/customer?id=${customer.customer_id}`}><p className='cursor-pointer text-sky-600'>{customer.first_name + " " + customer.last_name}</p></Link>
             </TableCell>
             <TableCell align="center">{customer.phone_number}</TableCell>
             <TableCell align="center">{customer.email}</TableCell>

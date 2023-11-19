@@ -15,7 +15,7 @@ function AddZoneForm(props) {
 
     const handleAddZone = async () => {
         try {
-            let res = await api.post("/setup/camera", {
+            let res = await api.post("/setup/camera/", {
                 "zone_name": zoneName,
                 "zone_image": zoneImage,
                 "camera_id": cameraip,

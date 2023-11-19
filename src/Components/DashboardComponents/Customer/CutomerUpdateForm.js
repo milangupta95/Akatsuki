@@ -25,7 +25,7 @@ function CustomerUpdateForm(props) {
 
     const handleUpdate = async () => {
         try {
-            let res = await api.put(`customer/${customer.customer_id}`, {
+            let res = await api.put(`customer/${customer.customer_id}/`, {
                 phone_number: mobileNumber,
                 first_name: fname,
                 last_name: lname,

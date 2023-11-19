@@ -44,41 +44,41 @@ function DemographicAnalysis() {
                     <h1 className='text-xl text-center font-bold p-2'>Summary</h1>
                     <div className='flex w-[full] items-center justify-center space-x-8'>
                         <div className='w-[30%] text-center'>
-                            <p className='text-2xl font-bold'>{279}</p>
+                            <p className='text-2xl font-bold'>{150}</p>
                             <p className='text-lg font-bold text-[#5A67BA]'>{'Individual Engager'}</p>
                         </div>
                         <div className='w-[30%] text-center'>
-                            <p className='text-2xl font-bold'>{379}</p>
+                            <p className='text-2xl font-bold'>{25}</p>
                             <p className='text-lg font-bold text-[#5A67BA]'>{'Group Engager'}</p>
                         </div>
                     </div>
                     <div className='flex w-[full] items-center justify-center space-x-8'>
                         <div className='w-[30%] text-center'>
-                            <p className='text-2xl font-bold'>{279}</p>
+                            <p className='text-2xl font-bold'>{200}</p>
                             <p className='text-lg font-bold text-[#5A67BA]'>{'Individual Footfall'}</p>
                         </div>
                         <div className='w-[30%] text-center'>
-                            <p className='text-2xl font-bold'>{379}</p>
+                            <p className='text-2xl font-bold'>{50}</p>
                             <p className='text-lg font-bold text-[#5A67BA]'>{'Group Footfall'}</p>
                         </div>
                     </div>
                 </div>
                 <div className='flex shadow-lg mx-[auto] bg-[#5A67BA] w-full h-[30%] rounded-b-lg p-2 pt-10 justify-between'>
                     <div className='w-[30%] text-center'>
-                        <p className='text-2xl font-bold'>{1179}</p>
+                        <p className='text-2xl font-bold'>{200}</p>
                         <p className='text-sm font-bold text-white'>{'Total Footfall'}</p>
                     </div>
                     <div className='w-[30%] text-center'>
-                        <p className='text-2xl font-bold'>{379}</p>
+                        <p className='text-2xl font-bold'>{9}</p>
                         <p className='text-sm font-bold text-white'>{'Bounced Footfall'}</p>
                     </div>
 
                     <div className='w-[30%] text-center'>
-                        <p className='text-2xl font-bold'>{279}</p>
+                        <p className='text-2xl font-bold'>{115}</p>
                         <p className='text-sm font-bold text-white'>{'Missed Oppurtunities'}</p>
                     </div>
                     <div className='w-[30%] text-center'>
-                        <p className='text-2xl font-bold'>{379}</p>
+                        <p className='text-2xl font-bold'>{50}</p>
                         <p className='text-sm font-bold text-white'>{'Converted Footfalls'}</p>
                     </div>
                 </div>
@@ -204,23 +204,23 @@ function DemographicAnalysis() {
                 <div className='flex flex-wrap justify-between [&>*]:mr-2 last:mr-0'>
                     <NormalBox row={{
                         name: "Male Footfall",
-                        value: 200,
-                        baseval: 1179
+                        value: 140,
+                        baseval: 200
                     }} />
                     <NormalBox row={{
                         name: "Male Engagers",
-                        value: 180,
-                        baseval: 1179
+                        value: 60,
+                        baseval: 200
                     }} />
                     <NormalBox row={{
                         name: "Female Footfall",
-                        value: 200,
-                        baseval: 1179
+                        value: 60,
+                        baseval: 200
                     }} />
                     <NormalBox row={{
                         name: "Female Engagers",
-                        value: 200,
-                        baseval: 1179
+                        value: 30,
+                        baseval: 200
                     }} />
                 </div>
             </div>

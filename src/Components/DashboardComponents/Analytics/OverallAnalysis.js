@@ -5,22 +5,22 @@ import AnalyticsBox from './AnalyticsBox';
 const data = [
     {
         "id": "foot_fall",
-        "value": 2000,
+        "value": 200,
         "label": "Footfall"
     },
     {
         "id": "engaged",
-        "value": 1500,
+        "value": 150,
         "label": "Engagers"
     },
     {
         "id": "grpup_count",
-        "value": 1300,
+        "value": 130,
         "label": "Group Count"
     },
     {
         "id": "converted",
-        "value": 500,
+        "value": 50,
         "label": "Conversion"
     },
 ]
@@ -79,33 +79,33 @@ function OverallAnalysis() {
             <div className='w-[95%] items-center justify-between flex flex-wrap'>
                 <AnalyticsBox values={{
                     name: "Footfall",
-                    actualValue: 1179,
-                    valueNeeded: 1179
+                    actualValue: 200,
+                    valueNeeded: 200
                 }}></AnalyticsBox>
                 <AnalyticsBox values={{
                     name: "Bounced Customer",
-                    actualValue: 90,
-                    valueNeeded: 1179
+                    actualValue: 9,
+                    valueNeeded: 200
                 }}></AnalyticsBox>
                 <AnalyticsBox values={{
                     name: "Engagers",
-                    actualValue: 1064,
-                    valueNeeded: 1179
+                    actualValue: 150,
+                    valueNeeded: 200
                 }}></AnalyticsBox>
                 <AnalyticsBox values={{
                     name: "Billable Entities",
-                    actualValue: 1027,
-                    valueNeeded: 1179
+                    actualValue: 50,
+                    valueNeeded: 200
                 }}></AnalyticsBox>
                 <AnalyticsBox values={{
                     name: "Missed Oppurtunities",
-                    actualValue: 563,
-                    valueNeeded: 1179
+                    actualValue: 115,
+                    valueNeeded: 200
                 }}></AnalyticsBox>
                 <AnalyticsBox values={{
                     name: "Conversion Rate",
-                    actualValue: 552,
-                    valueNeeded: 1179
+                    actualValue: 50,
+                    valueNeeded: 200
                 }}></AnalyticsBox>
             </div>
 

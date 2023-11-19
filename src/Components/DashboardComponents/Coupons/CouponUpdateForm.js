@@ -86,7 +86,7 @@ function CouponUpdateForm({coupon,handleClose,setCoupon}) {
                 "prev_purchase_amount": (Number)(previousPurchase),
                 "visit_frequency": (Number)(freqvisit)
             }
-            const res = await api.put(`/coupon/${coupon.coupon_id}`, newCoupon);
+            const res = await api.put(`/coupon/${coupon.coupon_id}/`, newCoupon);
             if (res) {
                 if (res.status === 200) {
                     setMessage("Coupon Updated SuccessFully");
